@@ -1,5 +1,7 @@
+from bson import json_util
 from pymongo import MongoClient
 import configparser
+import json
 import logging
 import requests
 
@@ -36,9 +38,14 @@ change_stream = collection.watch()
 for change in change_stream:
     if change['operationType'] == 'insert':
         new_document = change['fullDocument']
+        json_document = json.loads(json_util.dumps(new_document))
         # Post to API and log
-        response = requests.post(update_api, json=new_document)
-        logger.info('Added document into solr core: {}'.format(new_document))
+        try:
+            response = requests.post(update_api, json=json_document)
+            logger.info(
+                'Added document into solr core: {}'.format(json_document))
+        except:
+            logger.exception('Failed to add document to solr core: {}'.format(
+                json_document), exc_info=True)
     else:
-        logger.exception('Failed to add document to solr core: {}'.format(
-            new_document), exc_info=True)
+        print(change['operationType'])
