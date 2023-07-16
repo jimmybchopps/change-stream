@@ -13,7 +13,6 @@ solr_url = config.get('Settings', 'SOLR_URL')
 mongo_connection = config.get('Settings', 'MONGO_CONNECTION')
 mongo_db = config.get('Settings', 'MONGO_DB')
 mongo_collection = config.get('Settings', 'MONGO_COLLECTION')
-mongo_operations = config.get('Settings', 'OPERATIONS_TO_MONITOR')
 
 # Set up Logging
 logger = logging.getLogger(__name__)
