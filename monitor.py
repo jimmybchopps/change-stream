@@ -31,7 +31,7 @@ collection = db[mongo_collection]
 update_api = solr_url + '/update/json/docs'
 
 # Create a change stream
-change_stream = collection.watch()
+change_stream = collection.watch(full_document_before_change="required")
 
 # Loop through the change stream and watch for new insert events
 for change in change_stream:
@@ -48,3 +48,4 @@ for change in change_stream:
                 json_document), exc_info=True)
     else:
         print(change['operationType'])
+        print(change['fullDocument'])
