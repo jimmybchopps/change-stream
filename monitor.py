@@ -13,6 +13,7 @@ solr_url = config.get('Settings', 'SOLR_URL')
 mongo_connection = config.get('Settings', 'MONGO_CONNECTION')
 mongo_db = config.get('Settings', 'MONGO_DB')
 mongo_collection = config.get('Settings', 'MONGO_COLLECTION')
+pre_image_setting = config.get('Settings', 'PREIMAGE_SETTING')
 
 # Set up Logging
 logger = logging.getLogger(__name__)
@@ -31,7 +32,7 @@ collection = db[mongo_collection]
 update_api = solr_url + '/update/json/docs'
 
 # Create a change stream
-change_stream = collection.watch(full_document_before_change="required")
+change_stream = collection.watch(full_document_before_change=pre_image_setting)
 
 # Loop through the change stream and watch for new insert events
 for change in change_stream:
